@@ -1,0 +1,22 @@
+ARCH=arm
+#COMPILER=arm-linux-gnueabihf-
+NDK=/home/arm/bbb-android/ffmpeg/android-ndk-r14b
+PLATFORM=$(NDK)/platforms/android-21/arch-arm
+TOOLCHAIN=$(NDK)/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
+CC=$(TOOLCHAIN)/bin/arm-linux-androideabi-gcc
+INCLUDES=-I$(PLATFORM/usr/include)
+LIB=-L$(PLATFORM/usr/lib) 
+CFLAGS  = $(INCLUDES) $(LIB) -g -fPIC -D_FILE_OFFSET_BITS=64 -D_LARGE_FILE
+
+deps := $(wildcard *.h) 	
+	
+libcJSON.so:cJSON.o $(deps)
+	$(CC) $(CFLAGS) -shared -o libcJSON.so cJSON.o
+	
+cJSON.o:cJSON.c $(deps)
+	$(CC) -c $(CFLAGS) cJSON.c -o cJSON.o
+
+clean:
+	rm -f *.o 
+	rm -f *.so
+	rm -f *.exe
